@@ -31,5 +31,11 @@ public class VipParkingStrategyPowerMockTest {
     public void testCalculateHourlyPrice_givenNotSunday_thenPriceIsDoubleOfNonSundayPrice() {
         /* Exercise 6: Write test case for VipParkingStrategy calculateHourlyPrice
          * by using PowerMock to mock static method */
+        mockStatic(ParkingLot.class, Calendar.class);
+        when(ParkingLot.getBasicHourlyPrice()).thenReturn(20);
+        when(Calendar.getInstance().get(Calendar.DAY_OF_WEEK)).thenReturn(Calendar.SUNDAY);
+        VipParkingStrategy vipParkingStrategy = new VipParkingStrategy();
+        Integer price = vipParkingStrategy.calculateHourlyPrice();
+        assertEquals(Integer.valueOf(40), price);
     }
 }
