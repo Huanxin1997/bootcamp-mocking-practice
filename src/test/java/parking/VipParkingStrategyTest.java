@@ -38,7 +38,15 @@ public class VipParkingStrategyTest {
     public void testPark_givenCarIsNotVipAndAFullParkingLog_thenGiveNoSpaceReceipt() {
         /* Exercise 4, Write a test case on VipParkingStrategy.park()
          * With using Mockito spy, verify and doReturn */
+        Car car = spy(new Car(CAR_NAME_OL1234));
+        ParkingLot parkingLot = spy(new ParkingLot(PARKING_LOT_NAME_A, 0));
+        List<ParkingLot> parkingLots = Collections.singletonList(parkingLot);
+        VipParkingStrategy vipParkingStrategy = spy(new VipParkingStrategy());
+        doReturn(false).when(vipParkingStrategy).isAllowOverPark(any());
 
+        Receipt receipt = vipParkingStrategy.park(parkingLots, car);
+        assertEquals(NO_PARKING_LOT, receipt.getParkingLotName());
+        verify(parkingLot, times(0)).getName();
     }
 
     @Test
