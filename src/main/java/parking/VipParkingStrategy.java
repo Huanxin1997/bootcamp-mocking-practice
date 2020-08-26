@@ -17,21 +17,21 @@ public class VipParkingStrategy implements ParkingStrategy {
 	public Receipt park(List<ParkingLot> parkingLots, Car car) {
 
 		parkingLots = Optional.ofNullable(parkingLots).orElse(new ArrayList<>());
-		
+
 		for (ParkingLot parkingLot : parkingLots) {
 			if (parkingLot.isFull() && !isAllowOverPark(car)) {
 				continue;
 			}
-			
+
 			parkingLot.getParkedCars().add(car);
 			return createReceipt(parkingLot, car);
 		}
-		
+
 		return createNoSpaceReceipt(car);
 	}
 
 	private Receipt createReceipt(ParkingLot parkingLot, Car car) {
-		
+
 		Receipt receipt = new Receipt();
 		receipt.setCarName(car.getName());
 		receipt.setParkingLotName(parkingLot.getName());
@@ -39,14 +39,14 @@ public class VipParkingStrategy implements ParkingStrategy {
 	}
 
 	private Receipt createNoSpaceReceipt(Car car) {
-		
+
 		Receipt receipt = new Receipt();
 		receipt.setCarName(car.getName());
 		receipt.setParkingLotName(NO_PARKING_LOT);
 		return receipt;
 	}
 
-	boolean isAllowOverPark(Car car){
+	public boolean isAllowOverPark(Car car){
 		return carDao.isVip(car.getName()) && StringUtils.contains(car.getName(), "A");
 	}
 
