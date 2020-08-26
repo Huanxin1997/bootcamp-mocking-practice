@@ -21,7 +21,7 @@ public class InOrderParkingStrategyTest {
         ParkingLot parkingLot = mock(ParkingLot.class);
         when(car.getName()).thenReturn(CAR_NAME_OL1234);
         when(parkingLot.getName()).thenReturn(PARKING_LOT_NAME_A);
-        InOrderParkingStrategy inOrderParkingStrategy = new InOrderParkingStrategy();
+        InOrderParkingStrategy inOrderParkingStrategy = spy(new InOrderParkingStrategy());
         Receipt spaceReceipt = inOrderParkingStrategy.createReceipt(parkingLot, car);
         assertEquals(CAR_NAME_OL1234, spaceReceipt.getCarName());
         assertEquals(PARKING_LOT_NAME_A, spaceReceipt.getParkingLotName());
@@ -33,7 +33,7 @@ public class InOrderParkingStrategyTest {
          * With using Mockito to mock the input parameter */
         Car car = mock(Car.class);
         when(car.getName()).thenReturn(CAR_NAME_OL1234);
-        InOrderParkingStrategy inOrderParkingStrategy = new InOrderParkingStrategy();
+        InOrderParkingStrategy inOrderParkingStrategy = spy(new InOrderParkingStrategy());
         Receipt spaceReceipt = inOrderParkingStrategy.createNoSpaceReceipt(car);
         assertEquals(CAR_NAME_OL1234, spaceReceipt.getCarName());
         assertEquals(NO_PARKING_LOT, spaceReceipt.getParkingLotName());
@@ -42,19 +42,29 @@ public class InOrderParkingStrategyTest {
     @Test
     public void testPark_givenNoAvailableParkingLot_thenCreateNoSpaceReceipt() {
         /* Exercise 2: Test park() method. Use Mockito.spy and Mockito.verify to test the situation for no available parking lot */
-        Car spyCar = spy(new Car(CAR_NAME_OL1234));
+        Car car = spy(new Car(CAR_NAME_OL1234));
         ParkingLot parkingLot = spy(new ParkingLot(PARKING_LOT_NAME_A, 0));
         List<ParkingLot> parkingLots = Collections.singletonList(parkingLot);
         InOrderParkingStrategy inOrderParkingStrategy = spy(new InOrderParkingStrategy());
 
-        Receipt receipt = inOrderParkingStrategy.park(parkingLots, spyCar);
+        Receipt receipt = inOrderParkingStrategy.park(parkingLots, car);
         assertEquals(ParkingStrategy.NO_PARKING_LOT, receipt.getParkingLotName());
-        verify(spyCar, times(1)).getName();
+        verify(car, times(1)).getName();
     }
 
     @Test
     public void testPark_givenThereIsOneParkingLotWithSpace_thenCreateReceipt() {
         /* Exercise 2: Test park() method. Use Mockito.spy and Mockito.verify to test the situation for one available parking lot */
+        Car car = spy(new Car(CAR_NAME_OL1234));
+        ParkingLot parkingLot = spy(new ParkingLot(PARKING_LOT_NAME_A, 1));
+        List<ParkingLot> parkingLots = Collections.singletonList(parkingLot);
+        InOrderParkingStrategy inOrderParkingStrategy = spy(new InOrderParkingStrategy());
+
+        Receipt receipt = inOrderParkingStrategy.park(parkingLots, car);
+        assertEquals(CAR_NAME_OL1234, receipt.getCarName());
+        assertEquals(PARKING_LOT_NAME_A, receipt.getParkingLotName());
+        verify(car, times(1)).getName();
+        verify(parkingLot, times(1)).getName();
     }
 
     @Test
