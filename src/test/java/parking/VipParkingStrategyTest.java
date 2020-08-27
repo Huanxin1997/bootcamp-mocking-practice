@@ -1,6 +1,6 @@
 package parking;
 
-import mocking.MessageUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -12,16 +12,14 @@ import java.util.List;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
-import static org.powermock.api.mockito.PowerMockito.mockStatic;
 
 @RunWith(MockitoJUnitRunner.class)
 
 public class VipParkingStrategyTest {
     private static final String PARKING_LOT_NAME_A = "A";
-    private static final String PARKING_LOT_NAME_B = "B";
 
     public static String NO_PARKING_LOT = "No Parking Lot";
-    private static final String CAR_NAME_OL1234 = "OL1234";
+    private static final String CAR_NAME_OL1234 = "OA1234";
 
     @Mock
     CarDao carDao;
